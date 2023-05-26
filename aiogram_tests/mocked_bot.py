@@ -39,7 +39,7 @@ class MockedSession(BaseSession):
         self, bot: Bot, method: TelegramMethod[TelegramType], timeout: Optional[int] = None
     ) -> TelegramType:
         self.closed = False
-        self.requests.append(method.build_request(bot))
+        self.requests.append(Request(method=method.__api_method__, data=method.dict()))
         response: Response[TelegramType] = self.responses.pop()
         self.check_response(method=method, status_code=response.error_code, content=response.json())
         return response.result  # type: ignore
